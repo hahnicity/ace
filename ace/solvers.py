@@ -26,20 +26,24 @@ def lu_decomposition(a, b):
 
 def gauss_seidel(a, b, iterations):
     """
-    Solve a linear equation by gauss seidel iteration
+    Solve a linear equation by the gauss seidel iteration outlined in the book
+
+    Follows the eq:
+
+        dx
     """
     pass
 
 
 def gauss_jacobi(a, b, iterations, x=None):
     """
-    Solve a linear equation by gauss jacobi iteration
+    Solve a linear equation by the gauss jacobi iteration outlined in the book.
 
     Follows the eq:
 
-        dx = inv(D)(b - Ax)
+        x = inv(D)(b - Rx)
 
-    Where D is the diagonal matrix of A
+    Where D is the diagonal matrix of A and R is the remainder s.t D + R = A
     """
     d = _diagonal_matrix(a)
     # Calculate the remainder matrix
@@ -49,8 +53,7 @@ def gauss_jacobi(a, b, iterations, x=None):
         x = array([1 for _ in range(a.shape[1])])
 
     for _ in range(iterations):
-        dx = inv(d).dot(b - a.dot(x))
-        x = dx + x
+        x = inv(d).dot(b - r.dot(x))
     return x
 
 

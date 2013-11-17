@@ -17,7 +17,7 @@ def part_b(a, b):
     """
     Solve using Gauss-Jacobi
     """
-    print gauss_jacobi(a, b, 5, x=[0, 0, 0, 0])
+    print gauss_jacobi(a, b, 20, x=[0, 0, 0, 0])
 
 
 def part_c(a, b):
