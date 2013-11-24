@@ -1,5 +1,7 @@
 """
 Do some Black-Scholes-Merton fun
+
+Woot! it works!
 """
 from math import exp, log, pi, sqrt
 
@@ -8,6 +10,7 @@ from scipy.stats import norm
 
 def make_func(cur_value, strike, tau, rate, delta):
     """
+    Create the newton's method function for Black-Scholes
     """
     def regular(d):
         return lambda sigma: (
@@ -18,12 +21,13 @@ def make_func(cur_value, strike, tau, rate, delta):
     def derivative(d):
         return lambda sigma: (
             cur_value * exp(-delta * tau) *
-            sqrt((tau / (2 * pi)) * exp(-0.5 * (d(sigma) ** 2)))
+            sqrt(tau / (2 * pi)) * exp(-0.5 * (d(sigma) ** 2))
         )
 
+    # Do some maths to simplify the construction of d
     d = lambda sigma: (
-        ((log(cur_value * exp(-delta * tau)) - log(strike * exp(-rate * tau))) /
-         sigma * sqrt(tau)) + (0.5 * sigma * sqrt(tau))
+        (log(cur_value / strike) + tau * (rate - delta * .5 * sigma ** 2)) /
+        (sigma * sqrt(tau))
     )
     return lambda sigma: (
         sigma - (1 / derivative(d)(sigma)) * regular(d)(sigma)
@@ -37,19 +41,13 @@ def newtons(func, sigma, iterations=100):
 
 
 def main():
-    cur_value = 20
-    strike = 7.50
-    tau = 60
-    rate = 0.01
-    delta = .01
-    sigma = .1
-    d = lambda sigma: (
-        ((log(cur_value * exp(-delta * tau)) - log(strike * exp(-rate * tau))) /
-         sigma * sqrt(tau)) + (0.5 * sigma * sqrt(tau))
-    )
-    print d(sigma), d(sigma) ** 2, -0.5 * d(sigma) ** 2
-    print ((tau / (2 * pi)) * exp(-0.5 * d(sigma) ** 2))
-    print sqrt((tau / (2 * pi)) * exp(-0.5 * d(sigma) ** 2))
+    # Make up a random option
+    cur_value = 20.0
+    strike = 27.50
+    tau = .33  # Time in years!
+    rate = 0.05  # Rate of discount bond
+    delta = .01  # dividend rate
+    sigma = 1.1
     func = make_func(cur_value, strike, tau, rate, delta)
     print newtons(func, sigma)
 
