@@ -5,7 +5,7 @@ from numpy import array
 from numpy.linalg import inv
 
 
-def part_a(x, iterations=1000):
+def part_a(x, iterations=100):
     """
     Calculate the two functions using newtons method
     """
@@ -22,7 +22,8 @@ def part_a(x, iterations=1000):
 
 
 def main():
-    print part_a(array([2.0, 1.5]))
+    # For some reason this isn't converging for x1 > 1 x2 > 1.
+    print part_a(array([1.01, 0.5]), iterations=1000)
 
 
 if __name__ == "__main__":
