@@ -36,11 +36,10 @@ def part_a(x, iterations=100):
     return x
 
 
-def part_b(x, iterations=100):
+def part_b(x, J, iterations=100):
     """
     Find a root using Broydens method
     """
-    J = get_j(x)
     for _ in xrange(iterations):
         old_x = x
         f = get_f(old_x)
@@ -55,7 +54,8 @@ def part_b(x, iterations=100):
 def main():
     # For some reason this isn't converging for x1 > 1 x2 > 1.
     print part_a(array([1.01, 0.5]), iterations=1000)
-    print part_b(array([.7, .8]), iterations=100000)
+    j = array([[-500, 100], [201, -100]])
+    print part_b(array([.9, .9]), j,  iterations=100000)
 
 
 if __name__ == "__main__":
