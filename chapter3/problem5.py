@@ -36,26 +36,26 @@ def part_a(x, iterations=100):
     return x
 
 
-def part_b(x, J, iterations=100):
+def part_b(x_prev, x_new, J, iterations=100):
     """
     Find a root using Broydens method
     """
     for _ in xrange(iterations):
-        old_x = x
-        f = get_f(old_x)
-        x = old_x - inv(J).dot(f)
-        # Calculate the Jacobian
-        d = x - old_x
-        g = get_f(x) - get_f(old_x)
+        d = x_new - x_prev
+        g = get_f(x_new) - get_f(x_prev)
+        # Calculate Broyden's Jacobian
         J = J + (g - J.dot(d)).dot(transpose(d) / (transpose(d).dot(d)))
-    return x
+        x_new_plus = x_new - inv(J).dot(get_f(x_new))
+        x_prev = x_new
+        x_new = x_new_plus
+    return x_new
 
 
 def main():
     # For some reason this isn't converging for x1 > 1 x2 > 1.
     print part_a(array([1.01, 0.5]), iterations=1000)
     j = array([[-500, 100], [201, -100]])
-    print part_b(array([.9, .9]), j,  iterations=100000)
+    print part_b(array([.9, .9]), array([1.1, 1.1]), j,  iterations=10000)
 
 
 if __name__ == "__main__":
